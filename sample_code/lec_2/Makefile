@@ -1,8 +1,10 @@
 exe = hello.out
 option = -Wall -std=c99
 
-clean: run
+
+clean: run 
 	rm  $(exe)
+
 run: $(exe)
 	./$(exe)
 
