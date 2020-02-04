@@ -11,7 +11,7 @@ void bin(unsigned n)
     unsigned i, j=0; 
     for (i = 1 << 31; i > 0; i = i / 2) {
         (n & i)? printf("1"): printf("0"); 
-        if(j==0 || j==9) printf(" ");
+        if(j==0 || j==8) printf(" ");
         j++;
     }
     printf("\n");
