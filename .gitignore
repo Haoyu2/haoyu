@@ -1,6 +1,8 @@
 # https://stackoverflow.com/questions/30472628/gitignore-exclude-certain-files-in-all-subdirectories/30476326#30476326
+.gitignore
  sample_code/**/*
 !sample_code/**/*.c
 !sample_code/**/makefile
 
+2019/
 private/
