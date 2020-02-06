@@ -26,6 +26,6 @@ int main(void)
     else 
         printf("Wierd, This is not guaranteed in the general case.\n");
 
-    float d = 1e-5f;
+    
   return 0;
 }

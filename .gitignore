@@ -1,3 +1,6 @@
-/sample_code/**/*
-!/sample_code/**/*.c
-!/sample_code/**/makefile
+# https://stackoverflow.com/questions/30472628/gitignore-exclude-certain-files-in-all-subdirectories/30476326#30476326
+ sample_code/**/*
+!sample_code/**/*.c
+!sample_code/**/makefile
+
+private/
