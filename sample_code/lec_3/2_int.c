@@ -8,6 +8,12 @@
 
 int main(void)
 {
+  // printf("%f\n", 314);
+  // printf("%f\n", 314e);
+
+
+  int w = 0xff;
+
 
   printf("%lu\n",sizeof(int) );
   printf("This if for signed:\n");

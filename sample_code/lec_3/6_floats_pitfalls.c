@@ -9,7 +9,7 @@
 int main(void)
 {
 
-    float n=0.1;
+    float n=0.1f;
     double a = 0.1;
 
     if (n == 0.1) 
