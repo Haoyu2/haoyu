@@ -33,6 +33,10 @@
  */
 
 #include "f2sp.h"
+#include <math.h>
+#include <string.h>
+#include <assert.h>
+
 
 int main(void)
 {

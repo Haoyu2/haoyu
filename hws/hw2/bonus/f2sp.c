@@ -1,4 +1,5 @@
 #include "f2sp.h"
+#include <stdio.h>
 
 
 /* print out a char array of single-precision foramt of float*/

@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <assert.h>
+#ifndef F2SP_H
+#define F2SP_H
 /* Print out a char array of 
  * single-precision foramt of float
  */
@@ -18,3 +16,5 @@ void bin_char(float f, char s[]);
 *  
 */
 void f2sp(float f, char f_sp[]);
+
+#endif
