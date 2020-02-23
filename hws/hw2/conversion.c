@@ -66,15 +66,6 @@ int main(void)
         print(num_q, i);
         printf("       num: %d\n\n", q2num(num_q,i));
     }
-    char num_q[100];
-    int  num = 2020;
-    // this loop converts num into string num_q and print out  
-    for (int i=2; i<16; i++){
-        num2q(num, num_q, i);
-        print(num_q, i);
-        printf("       num: %d\n\n", q2num(num_q,i));
-    }
-
 
 
     char fb[32];
