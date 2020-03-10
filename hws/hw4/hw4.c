@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 
-// 25 points
+// 30 points
 // Write the function any(s1,s2) , which
 // returns the first location in a string s1 where any
 // character from the
@@ -29,7 +29,7 @@ int any(char s1[], char s2[]){
 
 
 
-// 25 points
+// 30 points
 
 // Write squeeze(s1,s2)
 // that deletes each character in s1 that matches any character 
@@ -69,7 +69,7 @@ unsigned invert(unsigned x, int p, int n){
 }
 
 
-// 30 points
+// 60 points
 
 // Write a program to remove all comments from a proper C program.
 // Don't forget to handle quoted strings and it's escape character properly. 
