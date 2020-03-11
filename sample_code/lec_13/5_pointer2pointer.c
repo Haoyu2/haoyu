@@ -16,6 +16,12 @@ int main(int argc, char *argv[])
 	
 	// How to store the address of p in a variable?
 
+	int **pp = &p;
+
+	printf("%d\n",p[1] );
+	printf("%d\n",*(*pp+2) );
+
+
 
 	return 0;
 }

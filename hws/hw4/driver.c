@@ -79,7 +79,7 @@ void num_test(){
         if (s[0]=='\n' || s[0]=='#') continue;
         sscanf(s,"%u,%u,%u",&num, &n, &p);
         printf("num is: %u\t right rotate %u bits is: %u \t" 
-                "invert with %u and %u is: %u\n",
+                "invert at %u with %u right_ajusted bits is: %u\n",
                  num,n, rightrot(num,n),p,n, invert(num,p,n));
 
     }

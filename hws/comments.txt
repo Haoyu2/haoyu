@@ -2,4 +2,4 @@
 * " """""
 */
 
-char s[] "*//*aksdfj \" aksdjf \'";
+char s[] "*//*aksdfj \" */aksdjf \'";
