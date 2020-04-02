@@ -21,20 +21,22 @@ int main(int agrc, char *argv[]){
 
 
 
-	int **a = malloc(sizeof(**a) * THREE);
+	int **a = malloc(sizeof(*a) * THREE);
+
+
 
 	int k=0;
 	for (int i=0;i<THREE;i++){
-		a[i] = malloc(sizeof(*a) * TWO);
+		a[i] = malloc(sizeof(**a) * TWO);
 		for (int j=0;j<TWO;j++)
 			a[i][j] = k++;	
 	}
 
-	int **b = malloc(sizeof(**b) * TWO);
+	int **b = malloc(sizeof(*b) * TWO);
 
 	k=0;
 	for (int i=0;i<TWO;i++){
-		b[i] = malloc(sizeof(*b) * THREE);
+		b[i] = malloc(sizeof(**b) * THREE);
 		for (int j=0;j<THREE;j++)
 			b[i][j] = k++;
 	}

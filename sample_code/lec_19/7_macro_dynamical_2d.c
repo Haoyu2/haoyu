@@ -14,9 +14,9 @@
 
 #ifndef GET2D
 #define GET2D(a,type, m,n) \
-	type **a = malloc(sizeof(**a) * m); \
+	type **a = malloc(sizeof(*a) * m); \
 	for (int i=0;i<m;i++)				\
-		a[i] = malloc(sizeof(*a) * n);
+		a[i] = malloc(sizeof(**a) * n);
 #endif
 
 #ifndef FREE2D
