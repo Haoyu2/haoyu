@@ -25,7 +25,7 @@ int main(int agrc, char *argv[]){
 	printf("%d\n", TESTING);
 	#endif
 
-	// gcc -E -DTESTING -DDEBUG  1.2_compile_time_macros.c 
+
 	#if defined(DEBUG) && defined(TESTING)
 	printf("DEBUG and TESTING are both defined\n"); 
 	#endif
