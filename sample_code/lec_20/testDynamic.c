@@ -19,6 +19,7 @@
 int main(int argc, char * argv[]){   
 
 	char *lib = argv[1];
+	// open the lib
 	void *lib_D = dlopen(lib, RTLD_LAZY);
 
 	if (lib_D == NULL) { 
@@ -27,18 +28,28 @@ int main(int argc, char * argv[]){
 	}
 
 
-	int a=2, b=1;
+	int a = 2, b=1;
+
+	int *ap = (int *) dlsym(lib_D,"a");
+	printf("%d\n", *ap);
+
  
 	char s[100];
 	printf("Input a func name (p1 or p2): ");
 	fgets(s, 100, stdin);
 	s[strlen(s)-1] = 0;
+
+	// load the function within the lib open
 	void (*func)(void) = dlsym(lib_D,s);
 	func();
+
+
 
 	printf("Input a func1 name (add, sub or mul): ");
 	fgets(s, 100, stdin);
 	s[strlen(s)-1] = 0;
+
+	
 	int (*func1)(int, int) = dlsym(lib_D,s);
 	printf("%d %s %d is : %d\n", a,s,b,func1(a,b) );
 

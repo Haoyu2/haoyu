@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 
 
 // func
@@ -11,7 +11,7 @@ void p2(void){
 	printf("How you doing!\n");
 }
 
-
+int a = 10;
 
 // func1
 
