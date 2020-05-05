@@ -1,0 +1,286 @@
+
+newArrayList_test-----------
+Debug: newArrayList with arguments: 	 len:0 size:4 com:0The length of a arrayList should be positive
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:0Length:5	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+appendArrayList_test---------
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:0min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Length:10	DataSize:4	End_Index:3	Min_Index:3	Max_Index:2
+1	1	2	-1	Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:0min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Index 4 is out of range in ArrayList
+
+
+Ending index is 4
+1	10	1	2	-1	min:-1	max:10
+min:1	max:1	
+min:1	max:1	
+min:1	max:2	
+
+
+Ending index is 3
+1	1	2	-1	min:-1	max:2
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+1 is in al
+3 is not in al
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+min:-1	max:1	x:1
+min:-1	max:1	x:-1
+
+
+Ending index is 3
+1	-1	1	-1	min:-1	max:1
+
+newArrayList_test-----------
+Debug: newArrayList with arguments: 	 len:0 size:4 com:0The length of a arrayList should be positive
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1Length:5	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+appendArrayList_test---------
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Length:10	DataSize:4	End_Index:3	Min_Index:3	Max_Index:2
+1	1	2	-1	Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Index 4 is out of range in ArrayList
+
+
+Ending index is 4
+1	10	1	2	-1	min:-1	max:10
+min:1	max:1	
+min:1	max:1	
+min:1	max:2	
+
+
+Ending index is 3
+1	1	2	-1	min:-1	max:2
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+1 is in al
+3 is not in al
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+min:-1	max:1	x:1
+min:-1	max:1	x:-1
+
+
+Ending index is 3
+1	-1	1	-1	min:-1	max:1
+Debug: newArrayList with arguments: 	 len:10 size:4 com:1Debug: newArrayList return with : 	 len:10 size:4 com:0
+newArrayList_test-----------
+Debug: newArrayList with arguments: 	 len:0 size:4 com:0The length of a arrayList should be positive
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1Length:5	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+appendArrayList_test---------
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Length:10	DataSize:4	End_Index:3	Min_Index:3	Max_Index:2
+1	1	2	-1	Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Index 4 is out of range in ArrayList
+
+
+Ending index is 4
+1	10	1	2	-1	min:-1	max:10
+min:1	max:1	
+min:1	max:1	
+min:1	max:2	
+
+
+Ending index is 3
+1	1	2	-1	min:-1	max:2
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+1 is in al
+3 is not in al
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+min:-1	max:1	x:1
+min:-1	max:1	x:-1
+
+
+Ending index is 3
+1	-1	1	-1	min:-1	max:1
+Debug: newArrayList with arguments: 	 len:10 size:4 com:1Debug: newArrayList return with : 	 len:10 size:4 com:0
+newArrayList_test-----------
+Debug: newArrayList with arguments: 	 len:0 size:4 com:0The length of a arrayList should be positive
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1Length:5	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+appendArrayList_test---------
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Length:10	DataSize:4	End_Index:3	Min_Index:3	Max_Index:2
+1	1	2	-1	Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Index 4 is out of range in ArrayList
+
+
+Ending index is 4
+1	10	1	2	-1	min:-1	max:10
+min:1	max:1	
+min:1	max:1	
+min:1	max:2	
+
+
+Ending index is 3
+1	1	2	-1	min:-1	max:2
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+1 is in al
+3 is not in al
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+min:-1	max:1	x:1
+min:-1	max:1	x:-1
+
+
+Ending index is 3
+1	-1	1	-1	min:-1	max:1
+Debug: newArrayList with arguments: 	 len:10 size:4 com:1Debug: newArrayList return with : 	 len:10 size:4 com:0Length:10	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+newArrayList_test-----------
+Debug: newArrayList with arguments: 	 len:0 size:4 com:0The length of a arrayList should be positive
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1Length:5	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+appendArrayList_test---------
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Length:10	DataSize:4	End_Index:3	Min_Index:3	Max_Index:2
+1	1	2	-1	Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Index 4 is out of range in ArrayList
+
+
+Ending index is 4
+1	10	1	2	-1	min:-1	max:10
+min:1	max:1	
+min:1	max:1	
+min:1	max:2	
+
+
+Ending index is 3
+1	1	2	-1	min:-1	max:2
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+1 is in al
+3 is not in al
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+min:-1	max:1	x:1
+min:-1	max:1	x:-1
+
+
+Ending index is 3
+1	-1	1	-1	min:-1	max:1
+Debug: newArrayList with arguments: 	 len:10 size:4 com:1Debug: newArrayList return with : 	 len:10 size:4 com:0Length:10	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+newArrayList_test-----------
+Debug: newArrayList with arguments: 	 len:0 size:4 com:0The length of a arrayList should be positive
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1Length:5	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+appendArrayList_test---------
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Length:10	DataSize:4	End_Index:3	Min_Index:3	Max_Index:2
+1	1	2	-1	Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Index 4 is out of range in ArrayList
+
+
+Ending index is 4
+1	10	1	2	-1	min:-1	max:10
+min:1	max:1	
+min:1	max:1	
+min:1	max:2	
+
+
+Ending index is 3
+1	1	2	-1	min:-1	max:2
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+1 is in al
+3 is not in al
+Debug: newArrayList with arguments: 	 len:10 size:4 com:0Debug: newArrayList return with : 	 len:10 size:4 com:1
+
+Ending index is -1
+min:-16777216	max:1
+Debug: newArrayList with arguments: 	 len:10 size:4 com:0Debug: newArrayList return with : 	 len:10 size:4 com:1
+
+Ending index is -1
+min:-16777216	max:1
+Debug: newArrayList with arguments: 	 len:10 size:4 com:1Debug: newArrayList return with : 	 len:10 size:4 com:0Length:10	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+newArrayList_test-----------
+Debug: newArrayList with arguments: 	 len:0 size:4 com:0The length of a arrayList should be positive
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1Length:5	DataSize:4	End_Index:-1	Min_Index:-1	Max_Index:-1
+
+appendArrayList_test---------
+Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Length:10	DataSize:4	End_Index:3	Min_Index:3	Max_Index:2
+1	1	2	-1	Debug: newArrayList with arguments: 	 len:5 size:4 com:0Debug: newArrayList return with : 	 len:5 size:4 com:1min:1	max:1	x:1
+min:1	max:1	x:2
+min:1	max:2	x:-1
+Index 4 is out of range in ArrayList
+
+
+Ending index is 4
+1	10	1	2	-1	min:-1	max:10
+min:1	max:1	
+min:1	max:1	
+min:1	max:2	
+
+
+Ending index is 3
+1	1	2	-1	min:-1	max:2
+
+
+Ending index is 1
+1	-1	min:-1	max:1
+1 is in al
+3 is not in al
+Debug: newArrayList with arguments: 	 len:10 size:4 com:0Debug: newArrayList return with : 	 len:10 size:4 com:1
+
+Ending index is -1
+min:-16777216	max:1
+Debug: newArrayList with arguments: 	 len:10 size:4 com:0Debug: newArrayList return with : 	 len:10 size:4 com:1
+
+Ending index is -1
+min:-16777216	max:1
