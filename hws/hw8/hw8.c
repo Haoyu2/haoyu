@@ -19,6 +19,8 @@ void readStudent(Student *stu, char *s){
 
 Class * readClass(char *s){
 
+
+	
 }
 
 

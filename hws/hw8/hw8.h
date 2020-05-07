@@ -31,6 +31,8 @@
 
 
 
+
+// These below has to be relevent in your code
 typedef struct 
 {
 	char *firstname, *lastname, *id;
