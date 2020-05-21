@@ -1,5 +1,0 @@
-# string1,sting2
-
-
-hello,world
-function,fputs

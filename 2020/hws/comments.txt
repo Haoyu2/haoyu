@@ -1,5 +1,0 @@
-/*asdfa
-* " """""
-*/
-
-char s[] "*//*aksdfj \" */aksdjf \'";
