@@ -1,0 +1,63 @@
+
+Find the first key equals the search key using binary search algorithm which log(n) running time
+
+while (i <= j):
+	1. compare the search key with the mid
+
+		a. if bigger goes right side by (m+1, j)
+		b. if smaller goes left side by (i, m-1)
+		c. if equal, (in the ordinary case just return, no matter if there are equal items besides this mid item),
+
+			but, if we want to find first item that equal to the search key, then we have to continue to search and comapre,
+
+			(keep the current mid which equals to the search key)
+			then goes to the left side by (i,m-1) utill we scan all the items.
+
+
+key = 1
+
+	i			m			j
+	1	1	1	1	1	1	1
+	0	1	2	3	4	5	6
+
+
+
+	i		j	m			
+	1	1	1	1	1	1	1
+	0	1	2	3	4	5	6
+
+
+	i	m'	j	m			
+	1	1	1	1	1	1	1
+	0	1	2	3	4	5	6
+
+	and the m' key also equals the search key 1 
+	then keep the m' and let j = m'-1
+
+
+
+	j
+	i	m'					
+	1	1	1	1	1	1	1
+	0	1	2	3	4	5	6
+
+	since it is still within the array (i<=j)
+
+	the current mid = 0 
+
+	m'
+	j
+	i	m					
+	1	1	1	1	1	1	1
+	0	1	2	3	4	5	6
+
+	and still equals to the search key 1
+	so continues with j = m' - 1 =-1
+
+	m'
+j
+	i	m					
+	1	1	1	1	1	1	1
+	0	1	2	3	4	5	6
+
+	well, here violates i<=j so get out of loop and return m' so the 0 gets returned
