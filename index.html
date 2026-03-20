@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSV Manager — Upload, Store & Browse</title>
+  <meta name="description"
+    content="Upload CSV files, store them in your browser with expiration, and browse data with paginated views." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="app-header">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+        <line x1="16" y1="13" x2="8" y2="13" />
+        <line x1="16" y1="17" x2="8" y2="17" />
+        <polyline points="10 9 9 9 8 9" />
+      </svg>
+      CSV Manager
+    </div>
+    <div class="header-actions">
+      <button id="btn-theme-toggle" class="btn-icon theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+        <!-- Sun icon (shown in dark mode → click to go light) -->
+        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+        <!-- Moon icon (shown in light mode → click to go dark) -->
+        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      </button>
+      <button id="btn-back-to-dashboard" class="btn btn-ghost hidden" title="Back to Dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Dashboard
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Dashboard View ===== -->
+  <main id="view-dashboard" class="container">
+    <div class="dashboard-header">
+      <h2>Your Files <span id="file-count" class="file-count"></span></h2>
+    </div>
+
+    <!-- Upload area -->
+    <div id="upload-area" class="upload-area">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="17 8 12 3 7 8" />
+        <line x1="12" y1="3" x2="12" y2="15" />
+      </svg>
+      <p>Drag &amp; drop CSV files here, or <span>browse</span></p>
+      <input type="file" id="file-input" accept=".csv,text/csv" multiple />
+    </div>
+
+    <!-- File cards -->
+    <div id="file-grid" class="file-grid"></div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="empty-state hidden">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+        <polyline points="13 2 13 9 20 9" />
+      </svg>
+      <p>No CSV files yet. Upload one to get started!</p>
+    </div>
+  </main>
+
+  <!-- ===== Viewer View ===== -->
+  <main id="view-viewer" class="container hidden">
+    <div class="viewer-header">
+      <div class="viewer-title">
+        <h2 id="viewer-file-name"></h2>
+      </div>
+    </div>
+
+    <!-- Settings bar -->
+    <div class="settings-bar">
+      <div class="setting-group">
+        <label for="select-page-size">Rows per page</label>
+        <select id="select-page-size">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="setting-group">
+        <label for="select-chunk-size">Rows per storage read</label>
+        <select id="select-chunk-size">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30" selected>30</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="setting-group" style="margin-left:auto;">
+        <span id="viewer-row-info" class="meta-value" style="font-size:0.8125rem;"></span>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+      <table class="csv-table">
+        <thead id="table-head"></thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <div id="pagination-info" class="pagination-info"></div>
+      <div id="pagination-controls" class="pagination-controls"></div>
+    </div>
+  </main>
+
+  <!-- ===== Modal (change expiration) ===== -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <h3 id="modal-title">Change Expiration</h3>
+      <div class="modal-body">
+        <label for="modal-expiry-input">New expiration (days from now)</label>
+        <input type="number" id="modal-expiry-input" min="1" max="365" value="7" />
+      </div>
+      <div class="modal-footer">
+        <button id="modal-cancel" class="btn btn-ghost">Cancel</button>
+        <button id="modal-confirm" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>
