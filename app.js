@@ -57,6 +57,48 @@ let colUserOverride = new Set(); // indices the user has manually toggled
 let sortCol = -1;          // column index being sorted, -1 = no sort
 let sortDir = 'none';      // 'asc' | 'desc' | 'none'
 
+// ───── Session state persistence ─────
+const SESSION_KEY = 'csv-manager-sessions';
+const MAX_RECENT = 2;
+
+function saveSession() {
+    if (!viewerState.fileId) return;
+    const sessions = getRecentSessions();
+    const entry = {
+        fileId: viewerState.fileId,
+        fileName: viewerState.fileName,
+        currentPage: viewerState.currentPage,
+        pageSize: viewerState.pageSize,
+        chunkSize: viewerState.chunkSize,
+        sortCol,
+        sortDir,
+        colUserOverride: [...colUserOverride],
+        colVisible: [...colVisible],
+        lastAccessed: Date.now(),
+    };
+    // Remove existing entry for this file
+    const filtered = sessions.filter(s => s.fileId !== entry.fileId);
+    // Prepend as most recent
+    filtered.unshift(entry);
+    // Keep only MAX_RECENT
+    localStorage.setItem(SESSION_KEY, JSON.stringify(filtered.slice(0, MAX_RECENT)));
+}
+
+function getRecentSessions() {
+    try {
+        return JSON.parse(localStorage.getItem(SESSION_KEY)) || [];
+    } catch { return []; }
+}
+
+function getSessionForFile(fileId) {
+    return getRecentSessions().find(s => s.fileId === fileId) || null;
+}
+
+function clearSessionForFile(fileId) {
+    const sessions = getRecentSessions().filter(s => s.fileId !== fileId);
+    localStorage.setItem(SESSION_KEY, JSON.stringify(sessions));
+}
+
 // ───── Helpers ─────
 function formatBytes(bytes) {
     if (bytes < 1024) return `${bytes} B`;
@@ -96,6 +138,8 @@ function toast(message, type = 'info') {
 
 // ───── View switching ─────
 function showDashboard() {
+    // Save session before leaving viewer
+    if (currentView === 'viewer') saveSession();
     currentView = 'dashboard';
     $dashboard.classList.remove('hidden');
     $viewer.classList.add('hidden');
@@ -103,23 +147,43 @@ function showDashboard() {
     refreshDashboard();
 }
 
-function showViewer(fileId, fileName) {
+function showViewer(fileId, fileName, resume = false) {
     currentView = 'viewer';
     $dashboard.classList.add('hidden');
     $viewer.classList.remove('hidden');
     $backBtn.classList.remove('hidden');
     viewerState.fileId = fileId;
     viewerState.fileName = fileName;
-    viewerState.currentPage = 1;
-    viewerState.chunkOffset = 0;
-    viewerState.pageSize = parseInt($pageSize.value);
-    viewerState.chunkSize = parseInt($chunkSize.value);
-    // Reset column visibility & sort for new file
-    colVisible = [];
+
+    const saved = resume ? getSessionForFile(fileId) : null;
+
+    if (saved) {
+        // Restore saved session state
+        viewerState.currentPage = saved.currentPage || 1;
+        viewerState.pageSize = saved.pageSize || 10;
+        viewerState.chunkSize = saved.chunkSize || 30;
+        sortCol = saved.sortCol ?? -1;
+        sortDir = saved.sortDir || 'none';
+        colUserOverride = new Set(saved.colUserOverride || []);
+        colVisible = saved.colVisible || [];
+        // Sync the select dropdowns with restored values
+        $pageSize.value = viewerState.pageSize;
+        $chunkSize.value = viewerState.chunkSize;
+    } else {
+        // Fresh open
+        viewerState.currentPage = 1;
+        viewerState.pageSize = parseInt($pageSize.value);
+        viewerState.chunkSize = parseInt($chunkSize.value);
+        sortCol = -1;
+        sortDir = 'none';
+        colVisible = [];
+        colUserOverride.clear();
+    }
+
+    viewerState.chunkOffset = Math.max(0,
+        Math.floor(((viewerState.currentPage - 1) * viewerState.pageSize) / viewerState.chunkSize) * viewerState.chunkSize
+    );
     colEmpty = [];
-    colUserOverride.clear();
-    sortCol = -1;
-    sortDir = 'none';
     $colDropdown.classList.add('hidden');
     $viewerName.textContent = fileName;
     loadChunkAndRender();
@@ -140,6 +204,9 @@ async function refreshDashboard() {
     }
     $emptyState.classList.add('hidden');
 
+    const recentSessions = getRecentSessions();
+    const recentIds = new Set(recentSessions.map(s => s.fileId));
+
     metas.forEach((meta, i) => {
         const days = daysUntil(meta.expiresAt);
         let expiryClass = '';
@@ -154,12 +221,17 @@ async function refreshDashboard() {
             expiryText = formatDate(meta.expiresAt);
         }
 
+        const hasSession = recentIds.has(meta.id);
+        const session = hasSession ? recentSessions.find(s => s.fileId === meta.id) : null;
+        const resumeInfo = session ? `Page ${session.currentPage}` : '';
+
         const card = document.createElement('div');
-        card.className = 'file-card';
+        card.className = `file-card${hasSession ? ' has-session' : ''}`;
         card.style.animationDelay = `${i * 0.05}s`;
         card.innerHTML = `
       <div class="file-card-header">
         <span class="file-card-name" data-id="${meta.id}" data-name="${meta.name}" title="Click to view">${meta.name}</span>
+        ${hasSession ? '<span class="recent-badge">Recently viewed</span>' : ''}
       </div>
       <div class="file-card-meta">
         <div class="meta-item">
@@ -180,6 +252,10 @@ async function refreshDashboard() {
         </div>
       </div>
       <div class="file-card-actions">
+        ${hasSession ? `<button class="btn btn-primary btn-sm action-resume" data-id="${meta.id}" data-name="${meta.name}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Continue · ${resumeInfo}
+        </button>` : ''}
         <button class="btn btn-ghost btn-sm action-view" data-id="${meta.id}" data-name="${meta.name}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           View
@@ -244,6 +320,14 @@ $uploadArea.addEventListener('drop', (e) => {
 
 // ───── Dashboard actions (delegated) ─────
 $fileGrid.addEventListener('click', async (e) => {
+    const resumeBtn = e.target.closest('.action-resume');
+    if (resumeBtn) {
+        const id = resumeBtn.dataset.id;
+        const name = resumeBtn.dataset.name;
+        showViewer(id, name, true);
+        return;
+    }
+
     const viewBtn = e.target.closest('.action-view') || e.target.closest('.file-card-name');
     if (viewBtn) {
         const id = viewBtn.dataset.id;
@@ -272,6 +356,7 @@ $fileGrid.addEventListener('click', async (e) => {
     if (delBtn) {
         if (confirm(`Delete "${delBtn.dataset.name}"?`)) {
             await deleteCSV(delBtn.dataset.id);
+            clearSessionForFile(delBtn.dataset.id);
             toast(`"${delBtn.dataset.name}" deleted`, 'success');
             refreshDashboard();
         }
@@ -433,6 +518,7 @@ async function goToPage(page) {
     } else {
         renderTable();
     }
+    saveSession();
 }
 
 $pagControls.addEventListener('click', (e) => {
@@ -450,6 +536,7 @@ $pageSize.addEventListener('change', () => {
     viewerState.currentPage = 1;
     viewerState.chunkOffset = 0;
     loadChunkAndRender();
+    saveSession();
 });
 
 $chunkSize.addEventListener('change', () => {
@@ -457,6 +544,7 @@ $chunkSize.addEventListener('change', () => {
     viewerState.currentPage = 1;
     viewerState.chunkOffset = 0;
     loadChunkAndRender();
+    saveSession();
 });
 
 $backBtn.addEventListener('click', showDashboard);
@@ -475,6 +563,7 @@ $tableHead.addEventListener('click', (e) => {
         sortDir = 'asc';
     }
     renderTable();
+    saveSession();
 });
 
 // ───── Column visibility ─────
@@ -490,12 +579,14 @@ $colDropdownList.addEventListener('change', (e) => {
     colUserOverride.add(ci);
     colVisible[ci] = cb.checked;
     renderTable();
+    saveSession();
 });
 
 $colShowAll.addEventListener('click', () => {
     colVisible = colVisible.map(() => true);
     colUserOverride = new Set(viewerState.headers.map((_, i) => i));
     renderTable();
+    saveSession();
 });
 
 // Close dropdown when clicking outside
@@ -527,6 +618,11 @@ function applyTheme(theme) {
 $themeToggle.addEventListener('click', () => {
     const current = document.documentElement.getAttribute('data-theme') || 'dark';
     applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// Save session on page unload
+window.addEventListener('beforeunload', () => {
+    if (currentView === 'viewer') saveSession();
 });
 
 // ───── Init ─────
