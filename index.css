@@ -291,6 +291,11 @@ body::before {
   padding: var(--sp-xl);
 }
 
+/* Viewer gets wider on large screens for table readability */
+#view-viewer.container {
+  max-width: 1600px;
+}
+
 /* ===== Dashboard View ===== */
 .dashboard-header {
   display: flex;
@@ -521,7 +526,7 @@ body::before {
   position: absolute;
   top: calc(100% + var(--sp-sm));
   left: 0;
-  z-index: 50;
+  z-index: 150;
   min-width: 240px;
   max-height: 320px;
   background: var(--bg-secondary);
@@ -660,6 +665,30 @@ body::before {
   font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  user-select: none;
+}
+
+/* Sortable header */
+.csv-table thead th.sortable {
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.csv-table thead th.sortable:hover {
+  color: var(--text-primary);
+}
+
+.csv-table thead th .sort-indicator {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 0.7rem;
+  opacity: 0.4;
+  transition: opacity var(--transition-fast);
+}
+
+.csv-table thead th.sort-active .sort-indicator {
+  opacity: 1;
+  color: var(--accent);
 }
 
 .csv-table tbody tr {

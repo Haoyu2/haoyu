@@ -53,6 +53,10 @@ let colVisible = [];       // boolean[] — is column i visible?
 let colEmpty = [];         // boolean[] — is column i empty on current page?
 let colUserOverride = new Set(); // indices the user has manually toggled
 
+// Sort state
+let sortCol = -1;          // column index being sorted, -1 = no sort
+let sortDir = 'none';      // 'asc' | 'desc' | 'none'
+
 // ───── Helpers ─────
 function formatBytes(bytes) {
     if (bytes < 1024) return `${bytes} B`;
@@ -68,6 +72,18 @@ function daysUntil(ts) {
     const diff = ts - Date.now();
     const d = Math.ceil(diff / 86400000);
     return d;
+}
+
+// Natural sort comparator: numbers sort numerically, strings alphabetically
+function naturalCompare(a, b) {
+    const numA = Number(a);
+    const numB = Number(b);
+    const aIsNum = a !== '' && !isNaN(numA);
+    const bIsNum = b !== '' && !isNaN(numB);
+    if (aIsNum && bIsNum) return numA - numB;
+    if (aIsNum) return -1;
+    if (bIsNum) return 1;
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
 }
 
 function toast(message, type = 'info') {
@@ -98,10 +114,12 @@ function showViewer(fileId, fileName) {
     viewerState.chunkOffset = 0;
     viewerState.pageSize = parseInt($pageSize.value);
     viewerState.chunkSize = parseInt($chunkSize.value);
-    // Reset column visibility for new file
+    // Reset column visibility & sort for new file
     colVisible = [];
     colEmpty = [];
     colUserOverride.clear();
+    sortCol = -1;
+    sortDir = 'none';
     $colDropdown.classList.add('hidden');
     $viewerName.textContent = fileName;
     loadChunkAndRender();
@@ -300,9 +318,9 @@ function renderTable() {
     // Figure out which rows from the chunk correspond to the current page
     const globalStart = (currentPage - 1) * pageSize;  // 0-based global start
     const localStart = globalStart - chunkOffset;
-    const pageRows = chunkRows.slice(localStart, localStart + pageSize);
+    let pageRows = chunkRows.slice(localStart, localStart + pageSize);
 
-    // Detect empty columns on THIS page
+    // Detect empty columns on THIS page (before sorting, same rows)
     colEmpty = headers.map((_, ci) =>
         pageRows.every(row => !row[ci] || row[ci].trim() === '')
     );
@@ -313,11 +331,22 @@ function renderTable() {
         return !colEmpty[ci];
     });
 
+    // Sort page rows if active
+    if (sortCol >= 0 && sortDir !== 'none') {
+        const dir = sortDir === 'asc' ? 1 : -1;
+        const ci = sortCol;
+        pageRows = [...pageRows].sort((a, b) => dir * naturalCompare(a[ci] || '', b[ci] || ''));
+    }
+
     // Visible column indices
     const visCols = headers.map((_, ci) => ci).filter(ci => colVisible[ci]);
 
-    // Header row
-    $tableHead.innerHTML = `<tr><th class="row-num">#</th>${visCols.map(ci => `<th>${escapeHTML(headers[ci])}</th>`).join('')}</tr>`;
+    // Header row with sort indicators
+    $tableHead.innerHTML = `<tr><th class="row-num">#</th>${visCols.map(ci => {
+        const isActive = sortCol === ci && sortDir !== 'none';
+        const arrow = sortCol === ci && sortDir === 'asc' ? '▲' : sortCol === ci && sortDir === 'desc' ? '▼' : '▲';
+        return `<th class="sortable${isActive ? ' sort-active' : ''}" data-col="${ci}">${escapeHTML(headers[ci])}<span class="sort-indicator">${arrow}</span></th>`;
+    }).join('')}</tr>`;
 
     // Body
     $tableBody.innerHTML = pageRows.map((row, i) => {
@@ -431,6 +460,22 @@ $chunkSize.addEventListener('change', () => {
 });
 
 $backBtn.addEventListener('click', showDashboard);
+
+// ───── Sort by clicking column headers ─────
+$tableHead.addEventListener('click', (e) => {
+    const th = e.target.closest('th.sortable');
+    if (!th) return;
+    const ci = parseInt(th.dataset.col);
+    if (sortCol === ci) {
+        // Cycle: asc → desc → none
+        sortDir = sortDir === 'asc' ? 'desc' : sortDir === 'desc' ? 'none' : 'asc';
+        if (sortDir === 'none') sortCol = -1;
+    } else {
+        sortCol = ci;
+        sortDir = 'asc';
+    }
+    renderTable();
+});
 
 // ───── Column visibility ─────
 $colVisBtn.addEventListener('click', (e) => {
