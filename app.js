@@ -27,6 +27,11 @@ const $modalCancel = document.getElementById('modal-cancel');
 const $modalConfirm = document.getElementById('modal-confirm');
 const $toastContainer = document.getElementById('toast-container');
 const $themeToggle = document.getElementById('btn-theme-toggle');
+const $colVisBtn = document.getElementById('btn-col-visibility');
+const $colDropdown = document.getElementById('col-visibility-dropdown');
+const $colDropdownList = document.getElementById('col-dropdown-list');
+const $colShowAll = document.getElementById('btn-col-show-all');
+const $hiddenColCount = document.getElementById('hidden-col-count');
 
 // ───── State ─────
 let currentView = 'dashboard'; // 'dashboard' | 'viewer'
@@ -42,6 +47,11 @@ let viewerState = {
     chunkSize: 30,
 };
 let modalFileId = null;
+
+// Column visibility: tracks which columns are visible and which the user has manually toggled
+let colVisible = [];       // boolean[] — is column i visible?
+let colEmpty = [];         // boolean[] — is column i empty on current page?
+let colUserOverride = new Set(); // indices the user has manually toggled
 
 // ───── Helpers ─────
 function formatBytes(bytes) {
@@ -88,6 +98,11 @@ function showViewer(fileId, fileName) {
     viewerState.chunkOffset = 0;
     viewerState.pageSize = parseInt($pageSize.value);
     viewerState.chunkSize = parseInt($chunkSize.value);
+    // Reset column visibility for new file
+    colVisible = [];
+    colEmpty = [];
+    colUserOverride.clear();
+    $colDropdown.classList.add('hidden');
     $viewerName.textContent = fileName;
     loadChunkAndRender();
 }
@@ -287,16 +302,55 @@ function renderTable() {
     const localStart = globalStart - chunkOffset;
     const pageRows = chunkRows.slice(localStart, localStart + pageSize);
 
+    // Detect empty columns on THIS page
+    colEmpty = headers.map((_, ci) =>
+        pageRows.every(row => !row[ci] || row[ci].trim() === '')
+    );
+
+    // Auto-hide empty columns unless user has overridden them
+    colVisible = headers.map((_, ci) => {
+        if (colUserOverride.has(ci)) return colVisible[ci] ?? true;
+        return !colEmpty[ci];
+    });
+
+    // Visible column indices
+    const visCols = headers.map((_, ci) => ci).filter(ci => colVisible[ci]);
+
     // Header row
-    $tableHead.innerHTML = `<tr><th class="row-num">#</th>${headers.map(h => `<th>${escapeHTML(h)}</th>`).join('')}</tr>`;
+    $tableHead.innerHTML = `<tr><th class="row-num">#</th>${visCols.map(ci => `<th>${escapeHTML(headers[ci])}</th>`).join('')}</tr>`;
 
     // Body
     $tableBody.innerHTML = pageRows.map((row, i) => {
         const rowNum = globalStart + i + 1;
-        return `<tr><td class="row-num">${rowNum}</td>${row.map(cell => `<td title="${escapeHTML(cell)}">${escapeHTML(cell)}</td>`).join('')}</tr>`;
+        return `<tr><td class="row-num">${rowNum}</td>${visCols.map(ci => `<td title="${escapeHTML(row[ci] || '')}">${escapeHTML(row[ci] || '')}</td>`).join('')}</tr>`;
     }).join('');
 
+    renderColDropdown();
     renderPagination();
+}
+
+function renderColDropdown() {
+    const { headers } = viewerState;
+    const hiddenCount = colVisible.filter(v => !v).length;
+
+    // Update badge
+    if (hiddenCount > 0) {
+        $hiddenColCount.textContent = hiddenCount;
+        $hiddenColCount.classList.remove('hidden');
+    } else {
+        $hiddenColCount.classList.add('hidden');
+    }
+
+    // Build checkbox list
+    $colDropdownList.innerHTML = headers.map((h, ci) => {
+        const checked = colVisible[ci] ? 'checked' : '';
+        const emptyTag = colEmpty[ci] ? '<span class="col-empty-tag">empty</span>' : '';
+        return `<label class="col-dropdown-item">
+            <input type="checkbox" data-col="${ci}" ${checked} />
+            <span class="col-name">${escapeHTML(h)}</span>
+            ${emptyTag}
+        </label>`;
+    }).join('');
 }
 
 function renderPagination() {
@@ -377,6 +431,35 @@ $chunkSize.addEventListener('change', () => {
 });
 
 $backBtn.addEventListener('click', showDashboard);
+
+// ───── Column visibility ─────
+$colVisBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    $colDropdown.classList.toggle('hidden');
+});
+
+$colDropdownList.addEventListener('change', (e) => {
+    const cb = e.target;
+    if (cb.type !== 'checkbox') return;
+    const ci = parseInt(cb.dataset.col);
+    colUserOverride.add(ci);
+    colVisible[ci] = cb.checked;
+    renderTable();
+});
+
+$colShowAll.addEventListener('click', () => {
+    colVisible = colVisible.map(() => true);
+    colUserOverride = new Set(viewerState.headers.map((_, i) => i));
+    renderTable();
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!$colDropdown.classList.contains('hidden') &&
+        !e.target.closest('.col-visibility-group')) {
+        $colDropdown.classList.add('hidden');
+    }
+});
 
 // ───── Utility ─────
 function escapeHTML(str) {

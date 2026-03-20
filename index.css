@@ -512,6 +512,100 @@ body::before {
   gap: var(--sp-sm);
 }
 
+/* Column visibility dropdown */
+.col-visibility-group {
+  position: relative;
+}
+
+.col-dropdown {
+  position: absolute;
+  top: calc(100% + var(--sp-sm));
+  left: 0;
+  z-index: 50;
+  min-width: 240px;
+  max-height: 320px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 40px var(--modal-shadow);
+  overflow: hidden;
+  animation: modalIn 0.2s ease;
+}
+
+.col-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-sm) var(--sp-md);
+  border-bottom: 1px solid var(--border-glass);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.col-dropdown-list {
+  overflow-y: auto;
+  max-height: 260px;
+  padding: var(--sp-xs) 0;
+}
+
+.col-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-xs) var(--sp-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+}
+
+.col-dropdown-item:hover {
+  background: var(--bg-glass);
+}
+
+.col-dropdown-item input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.col-dropdown-item .col-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.col-dropdown-item .col-empty-tag {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 3px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .setting-group label {
   font-size: 0.8125rem;
   font-weight: 500;
